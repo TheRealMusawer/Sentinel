@@ -1,0 +1,21 @@
+name: Sentinel Auto-Fix
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  fix-issue:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: read
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Sentinel Agent
+        uses: github/gh-aw@v1 # This is the official Agentic Workflow action
+        with:
+          instructions: .github/workflows/sentinel-auto-fix.md
+          model: gpt-4o # Or use 'llama-3-70b' via GitHub Models for free
