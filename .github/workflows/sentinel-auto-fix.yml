@@ -14,8 +14,14 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Run Sentinel Agent
-        uses: github/gh-aw@v1 # This is the official Agentic Workflow action
+      - name: Sentinel Agent Execution
+        # We use the models-action which has access to the free GitHub Models tier
+        uses: github/gh-models-action@v1
         with:
-          instructions: .github/workflows/sentinel-auto-fix.md
-          model: gpt-4o # Or use 'llama-3-70b' via GitHub Models for free
+          # This tells the agent to use your Markdown instructions as the prompt
+          instruction-file: .github/workflows/sentinel-auto-fix.md
+          # Choose a powerful free model from the GitHub Marketplace
+          model: gpt-4o
+        env:
+          # This is the built-in token that gives the AI permission to code
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
